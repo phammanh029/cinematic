@@ -4,10 +4,10 @@ services:
   kong-database:
     image: postgres:9.6
     environment:
-      POSTGRES_USER: kong
-      POSTGRES_DB: kong
-    ports: 
-      - "5432:5432"
+      POSTGRES_USER: kong_user
+      POSTGRES_DB: kong_db
+    #ports: 
+    #  - "5432:5432"
     networks: 
       - kong-net
     restart: on-failure
@@ -21,9 +21,9 @@ services:
     image: kong
     environment: 
       KONG_DATABASE: postgres
-      KONG_PG_DATABASE: kong
+      KONG_PG_DATABASE: kong_db
       KONG_PG_HOST: kong-database
-      KONG_PG_USER: kong
+      KONG_PG_USER: kong_user
     networks: 
       - kong-net
     depends_on: 
@@ -36,9 +36,9 @@ services:
     image: kong
     environment: 
       KONG_DATABASE: postgres
-      KONG_PG_DATABASE: kong
+      KONG_PG_DATABASE: kong_db
       KONG_PG_HOST: kong-database
-      KONG_PG_USER: kong
+      KONG_PG_USER: kong_user
       #KONG_PG_PASSWORD: kong
       KONG_LOG_LEVEL: debug
       KONG_PROXY_ACCESS_LOG: /dev/stdout
@@ -58,6 +58,34 @@ services:
       - kong-migration
     #    condition: service_healty
     restart: on-failure
+  #konga prepare
+  konga-prepare:
+    image: pantsel/konga:next
+    command: "-c prepare -a postgres -u postgresql://kong_user@kong-database:5432/konga_db"
+    networks: 
+      - kong-net
+    depends_on: 
+      - kong-database
+    restart: on-failure
+  #konga UI admin
+  konga:
+    image: pantsel/konga:next
+    restart: always
+    networks: 
+      - kong-net
+    environment:
+      DB_ADAPTER: postgres
+      DB_HOST: kong-database
+      DB_USER: kong_user
+      TOKEN_SECRET: km1GUr4RkcQD7DewhJPNXrCuZwcKmqjb
+      DB_DATABASE: konga_db
+      NODE_ENV: production
+    depends_on:
+      - kong-database
+      - konga-prepare
+    ports:
+      - "1337:1337"
+
 networks: 
   kong-net:
     driver: bridge

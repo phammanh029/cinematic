@@ -1,0 +1,33 @@
+version: '3.2'
+services: 
+  zookeeper:
+    image: wurstmeister/zookeeper
+    networks: 
+      - kafka-net
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - 9092:9092
+    depends_on: 
+      - zookeeper
+    networks: 
+      - kafka-net
+    environment: 
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+  # kafka manager
+  kafka-manager:
+    image: sheepkiller/kafka-manager
+    networks: 
+      - kafka-net
+    depends_on: 
+      - kafka
+    environment: 
+      ZK_HOSTS: zookeeper:2181
+      APPLICATION_SECRET: letmein
+    ports:
+      - 9000:9000
+networks: 
+  kafka-net:
+    driver: bridge

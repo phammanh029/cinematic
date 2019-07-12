@@ -5,6 +5,37 @@ const Bcrypt = require('bcryptjs');
 const request = require('request');
 const jwt = require('jsonwebtoken');
 
+var getKongJWTs = async id => {
+	return new Promise((resolve, reject) => {
+		request.get(`http://kong:8001/consumers/${id}/jwt`, (err, response, body) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(JSON.parse(body));
+			}
+		});
+	});
+};
+
+var createKongJwts = async (id) => {
+	return new Promise((resolve, reject) => {
+		request.post(
+			{
+				url: `http://kong:8001/consumers/${id}/jwt`,
+				formData: {},
+			},
+			async (err, response, body) => {
+				if (err) {
+					reject(err);
+				} else {
+					// parse consumer info
+					resolve(JSON.parse(body));
+				}
+			}
+		);
+	});
+};
+
 // connect to database
 mongoose.connect('mongodb://db/users', { useNewUrlParser: true }).catch(error => {
 	fastify.log.error(error);
@@ -112,26 +143,18 @@ fastify.route({
 				reply.status(401).send('Invalid user email or password');
 				return;
 			}
-			// create consumer
-			request.post(
-				{
-					url: `http://kong:8001/consumers/${user.email}/jwt`,
-					formData: {},
-				},
-				async (err, response, body) => {
-					if (err) {
-						console.log(err);
-						reply.status(500).send('Can not login user');
-						return;
-					}
-					// parse consumer info
-					let consumerInfo = JSON.parse(body);
-					// generate jwt
-					let token = jwt.sign({ iss: consumerInfo.key }, consumerInfo.secret, { expiresIn: 60 * 60});
-					//console.log(token);
-					reply.send({ token: token });
-				}
-			);
+			let jWtToken = null;
+			let jwts = await getKongJWTs(user.email);
+			if (!jwts || jwts.data.length < 1) {
+				jWtToken = await createKongJwts(user.email);
+			} else {
+				jWtToken = jwts.data[0];
+			}
+
+			// generate jwt
+			let token = jwt.sign({ iss: jWtToken.key }, jWtToken.secret, { expiresIn: 60 * 60 });
+			//console.log(token);
+			reply.send({ token: token });
 		} catch (error) {
 			fastify.log.error(error);
 			reply.status(500).send(error);

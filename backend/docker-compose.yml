@@ -1,0 +1,27 @@
+version: '3.2'
+services: 
+   # backend service
+  # database service
+  mongo:
+    image: mongo
+    networks: 
+      - backend
+    volumes:
+      - mongo-data:/data/db
+  # user services
+  user-service:
+    build: ../backend/users
+    networks: 
+      - backend
+      - api-gateway_kong-net
+      # api-gateway_kong-net:
+      #   aliases: 
+      #     - user-service
+    depends_on: 
+      - mongo
+networks: 
+  api-gateway_kong-net:
+    external: true
+  backend:
+volumes:
+ mongo-data:

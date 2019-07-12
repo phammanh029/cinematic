@@ -10,11 +10,11 @@ services:
     #  - "5432:5432"
     networks: 
       - kong-net
-    restart: on-failure
+    restart: always
     #stdin_open: true
     #tty: true
-    #volumes:
-    # - ./api-gateway/kong_data:/var/lib/postgresql/data
+    volumes:
+    - kong_data:/var/lib/postgresql/data
 
   # kong migration service 
   kong-migration:
@@ -57,7 +57,7 @@ services:
       - kong-database
       - kong-migration
     #    condition: service_healty
-    restart: on-failure
+    restart: always
   #konga prepare
   konga-prepare:
     image: pantsel/konga:next
@@ -86,12 +86,12 @@ services:
       - konga-prepare
     ports:
       - "1337:1337"
-   # volumes:
-   #     - ./api-gateway/konga_data:/app/kongadata
+    volumes:
+      - konga_data:/app/kongadata
 
 networks: 
   kong-net:
     driver: bridge
-#volumes:
-#  kong_data: 
-#  konga_data:
+volumes:
+ kong_data: 
+ konga_data:

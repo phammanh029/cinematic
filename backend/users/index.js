@@ -171,4 +171,12 @@ const start = async () => {
 	}
 };
 
+process.on('SIGTERM', async () =>{
+    fastify.log.info('Close server');
+    await fastify.close();
+    console.log('Close mongodb connection');
+    await mongoose.connection.close(false);
+    process.exit(0);
+});
+
 start();

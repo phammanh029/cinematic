@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "User service",
-            "program": "${workspaceFolder}\\backend\\users\\index.js"
+            "program": "${workspaceFolder}/src/backend/users/index.js"
         }
     ]
 }

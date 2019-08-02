@@ -1,15 +1,8 @@
+import { Process } from './global.d';
 import fastify from 'fastify';
 import DatabaseConnection from './databases/db';
 import AuthenticationService from './authentication/authentication.service';
 import { Server, IncomingMessage, ServerResponse } from 'http';
-interface Process {
-  env: {
-    PORT: number;
-  };
-  exit(code?: number): void;
-  on(name: string, callback: any): void;
-}
-
 declare var process: Process;
 
 const server: fastify.FastifyInstance<

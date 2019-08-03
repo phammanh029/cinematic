@@ -1,5 +1,7 @@
 import { Process } from './global.d';
+
 import fastify from 'fastify';
+
 import DatabaseConnection from './databases/db';
 import AuthenticationService from './authentication/authentication.service';
 import { Server, IncomingMessage, ServerResponse } from 'http';

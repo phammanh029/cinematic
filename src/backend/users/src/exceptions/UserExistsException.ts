@@ -6,4 +6,4 @@ class UserExistsException extends HttpException {
   }
 }
 
-export default  UserExistsException;
+export default UserExistsException;

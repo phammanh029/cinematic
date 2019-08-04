@@ -15,7 +15,7 @@ const server: fastify.FastifyInstance<
 
 const db = new DatabaseConnection('mongodb://mongo/users');
 db.connect().catch(err => {
-    console.log(err);
+  console.log(err);
   server.log.error('database connection error');
   process.exit(1);
 });

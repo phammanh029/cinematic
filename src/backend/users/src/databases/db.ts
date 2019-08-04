@@ -1,14 +1,19 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 class DatabaseConnection {
-  constructor(private dbUrl: string) {}
-  public connect = async () => {
-    await mongoose.connect(this.dbUrl, { useNewUrlParser: true });
-  };
+    private dbUrl: string;
 
-  public disconnect = async () => {
-    await mongoose.disconnect();
-  };
+    public constructor(dbUrl: string) {
+        this.dbUrl = dbUrl;
+    }
+
+    public connect = async (): Promise<typeof mongoose> => {
+        return await mongoose.connect(this.dbUrl, { useNewUrlParser: true });
+    };
+
+    public disconnect = async (): Promise<void> => {
+        await mongoose.disconnect();
+    };
 }
 
 export default DatabaseConnection;

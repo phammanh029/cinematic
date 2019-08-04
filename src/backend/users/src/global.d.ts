@@ -3,5 +3,5 @@ export interface Process {
         PORT: number;
     };
     exit(code?: number): void;
-    on(name: string, callback: any): void;
+    on(name: string, callback: () => void): void;
 }

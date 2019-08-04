@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 class DatabaseConnection {
     private dbUrl: string;

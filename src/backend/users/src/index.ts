@@ -1,40 +1,44 @@
-import { Process } from "./global.d";
+import { Process } from './global.d';
 
-import fastify from "fastify";
+import fastify from 'fastify';
 
-import DatabaseConnection from "./databases/db";
-import AuthenticationService from "./authentication/authentication.service";
-import { Server, IncomingMessage, ServerResponse } from "http";
+import DatabaseConnection from './databases/db';
+import AuthenticationService from './authentication/authentication.service';
+import { Server, IncomingMessage, ServerResponse } from 'http';
 declare var process: Process;
 
-const server: fastify.FastifyInstance<Server,IncomingMessage,ServerResponse> = fastify({});
+const server: fastify.FastifyInstance<
+Server,
+IncomingMessage,
+ServerResponse
+> = fastify({});
 
-const db = new DatabaseConnection("mongodb://mongo/users");
+const db = new DatabaseConnection('mongodb://mongo/users');
 db.connect().catch((err): void => {
     console.log(err);
-    server.log.error("database connection error");
+    server.log.error('database connection error');
     process.exit(1);
 });
 const authService = new AuthenticationService();
 
 server.route({
-    method: "POST",
-    url: "/register",
+    method: 'POST',
+    url: '/register',
     schema: {
         body: {
-            type: "object",
-            required: ["email", "name", "password"],
+            type: 'object',
+            required: ['email', 'name', 'password'],
             properties: {
                 email: {
-                    type: "string",
-                    format: "email"
+                    type: 'string',
+                    format: 'email'
                 },
                 name: {
-                    type: "string",
+                    type: 'string',
                     minLength: 2
                 },
                 password: {
-                    type: "string",
+                    type: 'string',
                     minLength: 6
                 }
             }
@@ -43,7 +47,7 @@ server.route({
     handler: async (req, reply): Promise<void> => {
         try {
             await authService.register(req.body);
-            reply.send("User created");
+            reply.send('User created');
         } catch (error) {
             server.log.error(error);
             reply.status(500).send(error);
@@ -52,19 +56,19 @@ server.route({
 });
 
 server.route({
-    method: "POST",
-    url: "/login",
+    method: 'POST',
+    url: '/login',
     schema: {
         body: {
-            type: "object",
-            required: ["email", "password"],
+            type: 'object',
+            required: ['email', 'password'],
             properties: {
                 email: {
-                    type: "string",
-                    format: "email"
+                    type: 'string',
+                    format: 'email'
                 },
                 password: {
-                    type: "string",
+                    type: 'string',
                     minLength: 6
                 }
             }
@@ -84,7 +88,7 @@ server.route({
 const start = async (): Promise<void> => {
     try {
         const port = process.env.PORT || 3000;
-        await server.listen(port, "0.0.0.0");
+        await server.listen(port, '0.0.0.0');
         server.log.info(`server listen on port: ${port}`);
     } catch (error) {
         server.log.error(error);
@@ -93,11 +97,11 @@ const start = async (): Promise<void> => {
 };
 
 process.on(
-    "SIGTERM",
+    'SIGTERM',
     async (): Promise<void> => {
-        server.log.info("Close server");
+        server.log.info('Close server');
         await server.close();
-        console.log("Close mongodb connection");
+        console.log('Close mongodb connection');
         await db.disconnect();
         process.exit(0);
     }

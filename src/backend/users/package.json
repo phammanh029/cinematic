@@ -36,7 +36,7 @@
         "build": "tsc -p .",
         "build:live": "nodemon --watch './**/*.ts' --exec ts-node index.ts",
         "precommit": "npm run prettier:write",
-        "lint": "eslint \"src/**\"",
+        "lint": "eslint \"src/**\" --fix",
         "test": "jest"
     },
     "author": "manhp",

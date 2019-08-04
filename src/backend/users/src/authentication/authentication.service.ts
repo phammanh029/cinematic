@@ -1,21 +1,21 @@
-import UserDto from "../model/user.dto";
-import UserModel from "../model/user.model";
-import UserExistsException from "../exceptions/UserExistsException";
-import bcrypt from "bcrypt";
-import { get, post } from "request-promise";
-import User from "../model/user.interface";
-import HttpException from "../exceptions/HttpException";
-import LoginDto from "../authentication/login.dto";
-import InvalidCredentialException from "../exceptions/InvalidCredentialException";
-import jwt from "jsonwebtoken";
-import JWTCredentialDto from "./jwt.credential.dto";
+import UserDto from '../model/user.dto';
+import UserModel from '../model/user.model';
+import UserExistsException from '../exceptions/UserExistsException';
+import bcrypt from 'bcrypt';
+import { get, post } from 'request-promise';
+import User from '../model/user.interface';
+import HttpException from '../exceptions/HttpException';
+import LoginDto from '../authentication/login.dto';
+import InvalidCredentialException from '../exceptions/InvalidCredentialException';
+import jwt from 'jsonwebtoken';
+import JWTCredentialDto from './jwt.credential.dto';
 
 class AuthenticationService {
     // register to kong api gateway
     private registerKongConsumer = async (user: User): Promise<void> => {
         try {
             await post({
-                url: "http://kong:8001/consumers",
+                url: 'http://kong:8001/consumers',
                 formData: {
                     username: user.email
                 },

@@ -52,7 +52,7 @@ class AuthenticationService {
     public register = async (user: UserDto): Promise<void> => {
         // check if user exists
         if (await UserModel.findOne({ email: user.email })) {
-            // throw error that user already exist
+        // throw error that user already exist
             throw new UserExistsException(user.email);
         }
 
@@ -79,7 +79,7 @@ class AuthenticationService {
         }
 
         try {
-            // generate jwt token
+        // generate jwt token
             let tokens = await this.getJWTToken(user.email);
             let jwtToken;
             if (!tokens || tokens.total < 1) {

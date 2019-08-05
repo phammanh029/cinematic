@@ -1,6 +1,6 @@
 module.exports = {
     parser: '@typescript-eslint/parser',
-    parserOptions: { 
+    parserOptions: {
         project: './tsconfig.json'
     },
     plugins: [
@@ -10,6 +10,5 @@ module.exports = {
         'plugin:@typescript-eslint/recommended'
     ],
     rules: {
-        
     }
 }

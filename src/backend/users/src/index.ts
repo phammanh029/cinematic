@@ -8,9 +8,9 @@ import { Server, IncomingMessage, ServerResponse } from 'http';
 declare var process: Process;
 
 const server: fastify.FastifyInstance<
-Server,
-IncomingMessage,
-ServerResponse
+    Server,
+    IncomingMessage,
+    ServerResponse
 > = fastify({});
 
 const db = new DatabaseConnection('mongodb://mongo/users');

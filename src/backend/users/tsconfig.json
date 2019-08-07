@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         /* Basic Options */
-        // "incremental": true,                   /* Enable incremental compilation */
+        /* Enable incremental compilation */
         "target": "ES2017",
         /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */
         "module": "commonjs",
@@ -28,7 +28,8 @@
         /* Strict Type-Checking Options */
         "strict": true,
         /* Enable all strict type-checking options. */
-         "noImplicitAny": true,                 /* Raise error on expressions and declarations with an implied 'any' type. */
+        "noImplicitAny": true,
+        /* Raise error on expressions and declarations with an implied 'any' type. */
         // "strictNullChecks": true,              /* Enable strict null checks. */
         // "strictFunctionTypes": true,           /* Enable strict checking of function types. */
         // "strictBindCallApply": true,           /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
@@ -37,9 +38,11 @@
         // "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. */
 
         /* Additional Checks */
-         "noUnusedLocals": true,                /* Report errors on unused locals. */
+        "noUnusedLocals": true,
+        /* Report errors on unused locals. */
         // "noUnusedParameters": true,            /* Report errors on unused parameters. */
-         "noImplicitReturns": true,             /* Report error when not all code paths in function return a value. */
+        "noImplicitReturns": true,
+        /* Report error when not all code paths in function return a value. */
         // "noFallthroughCasesInSwitch": true,    /* Report errors for fallthrough cases in switch statement. */
 
         /* Module Resolution Options */
